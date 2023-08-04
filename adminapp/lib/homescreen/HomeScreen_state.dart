@@ -4,6 +4,9 @@ abstract class HomeScreenState extends Equatable{
 const HomeScreenState();
 }
 
+abstract class HomeScreenActionState extends HomeScreenState
+{}
+
 class HomeScreenLoadingState extends HomeScreenState
 {
   @override
@@ -12,6 +15,12 @@ class HomeScreenLoadingState extends HomeScreenState
 }
 
 class HomeScreenLoadedState extends HomeScreenState
+{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+class HomeNavigateToAddStudentState extends HomeScreenState
 {
   @override
   // TODO: implement props

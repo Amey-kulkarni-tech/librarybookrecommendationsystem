@@ -1,6 +1,8 @@
 import 'package:LRA/homescreen/HomeScreen_event.dart';
 import 'package:LRA/homescreen/HomeScreen_state.dart';
+import 'package:LRA/studentscreen/AddStudentScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'homescreen/HomeScreen_bloc.dart';
@@ -13,13 +15,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final HomeScreenBloc homeScreenBloc=HomeScreenBloc();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    homeScreenBloc.add(LoadHomeScreenEvent());
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => HomeScreenBloc()
+        create: (context) => homeScreenBloc
     ..add(LoadHomeScreenEvent()),
     child:Scaffold(
     appBar: AppBar(
+      centerTitle: true,
     title: Text("LRA  Admin"),
     ),
     body: BlocBuilder<HomeScreenBloc,HomeScreenState>(
@@ -30,7 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircularProgressIndicator(),
             );
           }
-        if(state is HomeScreenLoadedState) {
+        else if(state is HomeNavigateToAddStudentState)
+          {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddStudentScreen()));
+          });
+          }
+        else if(state is HomeScreenLoadedState) {
           return GridView.count(
             scrollDirection: Axis.vertical,
             padding: const EdgeInsets.all(20),
@@ -41,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               GestureDetector(
                 onTap: () {
                  // context.read<HomeScreenBloc>().add(LoadHomeScreenEvent());
+                   homeScreenBloc.add(HomeScreenMenuClickedEvent(menuIndex: 1));
                 },
                 child: Card(
                   color: Color(0xff0077b6),
@@ -61,8 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  print("got tapped");
+                onTap: () {homeScreenBloc.add(HomeScreenMenuClickedEvent(menuIndex: 2));
                 },
                 child: Card(
                   color: Color(0xff0077b6),
@@ -83,8 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  print("got tapped");
+                onTap:(){
+                  homeScreenBloc.add(HomeScreenMenuClickedEvent(menuIndex: 3));
                 },
                 child: Card(
                   color: Color(0xff0077b6),
@@ -106,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  print("got tapped");
+                  homeScreenBloc.add(HomeScreenMenuClickedEvent(menuIndex: 4));
                 },
                 child: Card(
                   color: Color(0xff0077b6),

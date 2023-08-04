@@ -13,3 +13,13 @@ class LoadHomeScreenEvent extends HomeScreenEvent
   // TODO: implement props
   List<Object?> get props =>[];
 }
+abstract class HomeSCreenActiveEvent extends HomeScreenEvent{}
+class HomeScreenMenuClickedEvent extends HomeScreenEvent
+{
+final int menuIndex;
+HomeScreenMenuClickedEvent({required this.menuIndex});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [menuIndex];
+
+}
