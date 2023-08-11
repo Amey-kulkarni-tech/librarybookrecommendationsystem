@@ -1,6 +1,7 @@
 
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 abstract class HomeScreenEvent extends Equatable
 {
@@ -17,9 +18,10 @@ abstract class HomeSCreenActiveEvent extends HomeScreenEvent{}
 class HomeScreenMenuClickedEvent extends HomeScreenEvent
 {
 final int menuIndex;
-HomeScreenMenuClickedEvent({required this.menuIndex});
+BuildContext context;
+HomeScreenMenuClickedEvent({required this.menuIndex,required this.context});
   @override
   // TODO: implement props
-  List<Object?> get props => [menuIndex];
+  List<Object?> get props => [menuIndex,context];
 
 }

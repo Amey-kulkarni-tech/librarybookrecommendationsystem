@@ -22,30 +22,34 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-        splash: Column(
-          children: [
-        ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-    child: Image.asset(
-    "assets/bookicon.png",
-    width:150,
-    height:150,
-    fit:BoxFit.fill,
-    )
-    ),
-            SizedBox(height: 20,),
-            const Text("Library Recommendation App",
-              style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
-           SizedBox(height: 20,),
-            const Text("Admin App",
-              style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),)
-
-          ],
+    return Container(
+      child: Center(
+        child: AnimatedSplashScreen(
+            splash: Column(
+              children: [
+            ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+        child: Image.asset(
+        "assets/bookicon.png",
+        width:60,
+        height:60,
+        fit:BoxFit.fill,
+        )
         ),
-        nextScreen: HomeScreen(),
-        splashIconSize: 250,
-      splashTransition: SplashTransition.scaleTransition,
+                SizedBox(height: 20,),
+                const Text("Library Recommendation App",
+                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+               SizedBox(height: 20,),
+                const Text("Admin App",
+                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
+
+              ],
+            ),
+            nextScreen: HomeScreen(),
+            splashIconSize: 150,
+          splashTransition: SplashTransition.scaleTransition,
+        ),
+      ),
     );
   }
 }
