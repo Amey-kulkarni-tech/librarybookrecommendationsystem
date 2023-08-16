@@ -28,6 +28,18 @@ class UserRepository
       }
   }
 
+  Future<String> deleteStudent(Student student)async {
+    String reqUrl = BASE_URL + "/DeleteStudent/?id=" + student.id;
+    Response response = await get(Uri.parse(reqUrl));
+    if (response.statusCode == 200) {
+                  return response.body;
+    }
+    else{
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
+
   Future<List<Student>> getEnrolledStudent()async
   {
     String reqUrl=BASE_URL+"/EnrolledStudent/";

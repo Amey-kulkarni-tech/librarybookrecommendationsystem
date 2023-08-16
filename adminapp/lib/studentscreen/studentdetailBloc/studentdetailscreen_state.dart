@@ -26,3 +26,14 @@ class StudentdetailErrorState extends StudentdetailState
   // TODO: implement props
   List<Object?> get props => [];
 }
+
+class StudentdetailDeleteState extends StudentdetailState
+{
+  final String msg;
+
+  StudentdetailDeleteState(this.msg);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [msg];
+
+}

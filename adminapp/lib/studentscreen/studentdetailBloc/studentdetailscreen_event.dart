@@ -23,3 +23,14 @@ class StudentdetailSearchBarEvent extends StudentdetailEvent
   List<Object?> get props => [students,query];
 
 }
+
+class StudentdetailDeleteEvent extends StudentdetailEvent
+{
+  final Student student;
+
+  StudentdetailDeleteEvent(this.student);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [student];
+
+}

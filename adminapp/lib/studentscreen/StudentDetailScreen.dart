@@ -2,6 +2,7 @@ import 'package:LRA/models/studentModel.dart';
 import 'package:LRA/studentscreen/studentdetailBloc/studentdetailscreen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class StudentDetailScreen extends StatefulWidget {
   const StudentDetailScreen({Key? key}) : super(key: key);
@@ -77,26 +78,182 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                           items=state.students;
                           flag=2;
                         }
+                      if(state.students.length==0)
+                        {
+                          return Center(
+                            child: Text("No Student Found to Display"),
+                          );
+                        }
                           return Expanded(
                             child: ListView.builder(
                                 itemCount: state.students.length,
                                 itemBuilder: (context, index) {
-                                  return Card(
-                                      child: ListTile(
-                                          title: Text(state.students[index].fname+" "+items[index].lname),
-                                          subtitle: Text(state.students[index].studentid),
-                                          leading: CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  "https://images.unsplash.com/photo-1547721064-da6cfb341d50")),
-                                          trailing: Icon(Icons.account_balance)
-                                      ));
+                                  return GestureDetector(
+                                    onTap: (){
+                                      TextEditingController mobileController=TextEditingController();
+                                      TextEditingController studentIDController=TextEditingController();
+                                      TextEditingController lastNameController=TextEditingController();
+                                      TextEditingController firstNameController=TextEditingController();
+                                      showBottomSheet(context: context,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                                top:Radius.circular(25.0)),
+                                          ) ,
+
+                                          backgroundColor: Colors.white,
+                                          builder: (BuildContext context){
+                                        firstNameController.text=state.students[index].fname;
+                                        lastNameController.text=state.students[index].lname;
+                                        mobileController.text=state.students[index].mobileno;
+                                        studentIDController.text=state.students[index].studentid;
+                                          return SizedBox(
+                                              height: 0.7 * MediaQuery.of(context).size.height,
+                                              child: Container(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: [
+                                                        IconButton(
+                                                          onPressed:(){ Navigator.pop(context);},
+                                                          icon: Icon(Icons.close,color: Colors.blue),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    Container(
+                                                      color: Colors.white,
+
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                        Container(
+                                                          child:  Padding(
+                                                            padding: EdgeInsets.all(15),
+                                                            child: TextField(
+                                                              readOnly: true,
+                                                              textAlign: TextAlign.center,
+                                                              controller: firstNameController,
+                                                              decoration: InputDecoration(
+                                                                filled: true,
+                                                                fillColor: Colors.white,
+                                                                border: OutlineInputBorder(),
+                                                                labelText: 'First Name',
+                                                                hintText: 'Enter First Name',
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                          Container(
+                                                            child:  Padding(
+                                                              padding: EdgeInsets.all(15),
+                                                              child: TextField(
+                                                                readOnly: true,
+                                                                textAlign: TextAlign.center,
+                                                                controller: lastNameController,
+                                                                decoration: InputDecoration(
+                                                                  filled: true,
+                                                                  fillColor: Colors.white,
+                                                                  border: OutlineInputBorder(),
+                                                                  labelText: 'Last Name',
+                                                                  hintText: 'Enter Last Name',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            child:  Padding(
+                                                              padding: EdgeInsets.all(15),
+                                                              child: TextField(
+                                                                readOnly: true,
+                                                                textAlign: TextAlign.center,
+                                                                controller: studentIDController,
+                                                                decoration: InputDecoration(
+                                                                  filled: true,
+                                                                  fillColor: Colors.white,
+                                                                  border: OutlineInputBorder(),
+                                                                  labelText: 'Student ID',
+                                                                  hintText: 'Enter Student ID',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            child:  Padding(
+                                                              padding: EdgeInsets.all(15),
+                                                              child: TextField(
+                                                                readOnly: true,
+                                                                textAlign: TextAlign.center,
+                                                                controller: mobileController,
+                                                                decoration: InputDecoration(
+                                                                  filled: true,
+                                                                  fillColor: Colors.white,
+                                                                  border: OutlineInputBorder(),
+                                                                  labelText: 'Mobile Number',
+                                                                  hintText: 'Enter Mobile no',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(15.0),
+                                                              child: ElevatedButton(
+                                                                child: Text(
+                                                                  'Delete Student',
+                                                                  style: TextStyle(
+                                                                      color: Colors.white, fontSize: 22),
+                                                                ),
+                                                                onPressed: (){
+                                                                  studentdetailBloc.add(StudentdetailDeleteEvent(state.students[index]));
+                                                                  Navigator.pop(context);
+                                                               //  studentdetailBloc.add(StudentDetailLoadingEvent());
+                                                                },
+                                                                style: ElevatedButton.styleFrom(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius: BorderRadius.circular(25)),
+                                                                    primary: Colors.red
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                          );
+                                          });
+                                    },
+                                    child: Card(
+                                        child: ListTile(
+                                            title: Text(state.students[index].fname+" "+items[index].lname),
+                                            subtitle: Text(state.students[index].studentid),
+                                            leading: CircleAvatar(
+                                                backgroundImage:AssetImage("assets/studimg.jpg")
+                                                ),
+                                            trailing: Icon(Icons.book_outlined)
+                                        )),
+                                  );
                                 }),
                           );
                     }
                       return Container();
                 } ,
                 listener: (context,state){
+                  if(state is StudentdetailDeleteState)
+                    {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.msg)),
+                      );
 
+                    }
             }),
          ],
        ),

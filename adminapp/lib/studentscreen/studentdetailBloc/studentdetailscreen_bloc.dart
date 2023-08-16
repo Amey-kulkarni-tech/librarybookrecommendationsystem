@@ -24,28 +24,22 @@ class StudentdetailBloc extends Bloc<StudentdetailEvent, StudentdetailState> {
 
     on<StudentdetailSearchBarEvent>((event,emit){
       List<Student> items=event.students.where((element) => element.fname.toLowerCase().contains(event.query.toLowerCase())
-      // {
 
-          // if(element.fname.toLowerCase().contains(event.query.toLowerCase()))
-          //   {
-          //     return true;
-          //   }
-          // else if(element.lname.toLowerCase().contains(event.query.toLowerCase()))
-          //   {
-          //     return true;
-          //   }
-          // else if(element.mobileno.toLowerCase().contains(event.query.toLowerCase()))
-          // {
-          //   return true;
-          // }
-          // else if(element.studentid.toLowerCase().contains(event.query.toLowerCase()))
-          // {
-          //   return true;
-          // }
-          // return false;
-      //}
       ).toList();
       emit(StudentdetailLoadedState(items));
     });
+
+    on<StudentdetailDeleteEvent>((event,emit){
+      try{
+        UserRepository().deleteStudent(event.student);
+        emit(StudentdetailDeleteState(event.student.fname+" deleted successfully !"));
+        this.add(StudentDetailLoadingEvent());
+      }catch(e)
+      {
+        emit(StudentdetailDeleteState("Student Not Deleted. Check network..!"));
+
+      }
+    });
+
   }
 }
