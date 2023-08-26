@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:LRA/bookscreen/AddBookScreen.dart';
+import 'package:LRA/bookscreen/BookDetailScreen.dart';
 import 'package:LRA/homescreen/HomeScreen_event.dart';
 import 'package:LRA/homescreen/HomeScreen_state.dart';
 import 'package:LRA/studentscreen/StudentDetailScreen.dart';
@@ -44,6 +45,8 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent,HomeScreenState>
       else  if(event.menuIndex==4)
       {
         print("Books");
+        Navigator.push(event.context,MaterialPageRoute(builder: (context) => BookDetailScreen()));
+
       }
 
   }
