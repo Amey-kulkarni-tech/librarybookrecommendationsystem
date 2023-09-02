@@ -17,7 +17,10 @@ class UserRepository
     Response response=await get(Uri.parse(reqUrl));
     if(response.statusCode==200)
       {
-          if(response.body=="True")
+        var data=jsonDecode(response.body);
+        print(data);
+        print(data["success"]);
+          if(data["success"]==true)
             {
               return 200;
             }
