@@ -20,7 +20,7 @@ class Book
         authorName: json["aname"],
         bookPrice: json["price"],
         //isliked: json["islike"],
-        isliked: 0,
+        isliked: json["islike"],
         taglist:tag
     );
   }
