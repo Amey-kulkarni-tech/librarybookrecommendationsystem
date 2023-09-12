@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:userapp/HomeBloc/home_screen_bloc.dart';
 import 'package:userapp/LoginScreen/LoginScreen.dart';
 import 'package:userapp/model/bookModel.dart';
-
+import  'package:speech_to_text/speech_to_text.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -15,10 +16,54 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeScreenBloc homeScreenBloc = HomeScreenBloc();
 
+  TextEditingController searchbarcontroller=TextEditingController();
+  SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
+  String _lastWords = '';
+
+
+  /// This has to happen only once per app
+  void _initSpeech() async {
+    _speechEnabled = await _speechToText.initialize();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initSpeech();
+  }
+
+  /// Each time to start a speech recognition session
+  void _startListening() async {
+    await _speechToText.listen(onResult: _onSpeechResult);
+    setState(() {});
+  }
+
+  /// Manually stop the active speech recognition session
+  /// Note that there are also timeouts that each platform enforces
+  /// and the SpeechToText plugin supports setting timeouts on the
+  /// listen method.
+  void _stopListening() async {
+    await _speechToText.stop();
+    setState(() {});
+  }
+  /// This is the callback that the SpeechToText plugin calls when
+  /// the platform returns recognized words.
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      _lastWords = result.recognizedWords;
+      searchbarcontroller.text=_lastWords;
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     int flag=1;
-    TextEditingController editingController= TextEditingController();
+   // TextEditingController editingController= TextEditingController();
     List<Book> suggestion=[];
     List<Book> books=[];
     return BlocProvider(
@@ -32,7 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             IconButton(onPressed: (){
               homeScreenBloc.add(LoadBookDataEvent());
-            }, icon: Icon(Icons.refresh))
+            }, icon: Icon(Icons.refresh)),
+             IconButton(onPressed:  _speechToText.isNotListening ? _startListening : _stopListening
+
+            // (){
+            //       searchbarcontroller.text="hello";
+            //
+            //   //homeScreenBloc.add(LoadBookDataEvent());
+             , icon: Icon(Icons.mic))
           ],
         ),
         drawer: NavBar(),
@@ -44,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  controller:searchbarcontroller,
                   onChanged: (value) {
                     print("in change");
                     if(books.isNotEmpty)
@@ -51,7 +104,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       homeScreenBloc.add(SearchBookEvent(books,suggestion,value));
                     }
                   },
-                  controller: editingController,
+                  onSubmitted: (value){
+                    print("in change");
+                    if(books.isNotEmpty)
+                    {
+                      homeScreenBloc.add(SearchBookEvent(books,suggestion,value));
+                    }
+                  },
                   decoration: InputDecoration(
                       labelText: "Search",
                       hintText: "Search",
