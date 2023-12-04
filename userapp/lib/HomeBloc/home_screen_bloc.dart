@@ -27,11 +27,12 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
               List suggestions = [];
              suggestions=data["suggestions"];
              sug = suggestions.map((e) => Book.fromJson(e)).toList();
-             sug.forEach((element) {
-               //book.insert(0, element);
-               book.add(element);
-             });
+             // sug.forEach((element) {
+             //   //book.insert(0, element);
+             //   book.add(element);
+             // });
             }
+          book.shuffle();
           emit(LoadHomeDataState(book: book, suggestions: sug));
         }
         else if(data["success"]==false){
@@ -56,7 +57,14 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
 
     on<BookLikedEvent>((event,emit)async{
       try {
-        UserRepository().likeBook(event.book);
+        if (event.book.isliked == 1) {
+          UserRepository().likeBook(event.book);
+        }
+        else if (event.book.isliked == 0)
+        {
+          UserRepository().dislikeBook(event.book);
+        }
+
       }catch(e)
       {
         print(e);

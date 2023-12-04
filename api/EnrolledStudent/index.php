@@ -3,7 +3,7 @@
 include("../config.php");
 
 // Query to fetch student details
-$sql = "SELECT id, student_id, stud_firstname, stud_lastname, stud_mobile FROM student_details_master where stud_status=1";
+$sql = "SELECT id, student_id, stud_firstname, stud_lastname, stud_mobile FROM student_details_master where stud_status=1 order by RAND()";
 
 $result = $con->query($sql);
 

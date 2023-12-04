@@ -11,8 +11,10 @@ class UserRepository
   Future<String> loginUser(String studid,String pass) async
   {
     String reqUrl=BASE_URL+"/login.php?stud_id="+studid+"&password="+pass;
+
     print(reqUrl);
     Response response=await get(Uri.parse(reqUrl));
+
     if(response.statusCode==200)
       {
         return response.body;
@@ -21,7 +23,7 @@ class UserRepository
   }
 
   Future<String> loadBookData()async{
-    String reqUrl=BASE_URL+"/index3.php?token="+token;
+    String reqUrl=BASE_URL+"/suggestion.php?token="+token;
     print(reqUrl);
     Response response=await get(Uri.parse(reqUrl));
 
@@ -40,13 +42,23 @@ class UserRepository
 
   likeBook(Book book)async
   {
-    String reqUrl=BASE_URL+"/like.php?bookId="+book.id+"&token="+token;
+    String reqUrl=BASE_URL+"/like1.php?bookId="+book.id+"&token="+token;
     print(reqUrl);
     Response response=await get(Uri.parse(reqUrl));
     if(response.statusCode==200)
       {
         print("done");
       }
+  }
+  dislikeBook(Book book)async
+  {
+    String reqUrl=BASE_URL+"/dislike1.php?bookId="+book.id+"&token="+token;
+    print(reqUrl);
+    Response response=await get(Uri.parse(reqUrl));
+    if(response.statusCode==200)
+    {
+      print("done");
+    }
   }
 
 }

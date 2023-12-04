@@ -2,7 +2,7 @@
 
 session_start();
 $con="";
-$db="lradatabase";
+$db="library";
 $server="localhost";
 $pwd="abc12345";
 $usr="root";

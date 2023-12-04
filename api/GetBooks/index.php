@@ -7,7 +7,7 @@ include("../config.php");
 // API endpoint to get details of all books and their associated tags
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Retrieve all books
-     $selectAllBooksQuery = "SELECT * FROM book_master1";
+     $selectAllBooksQuery = "SELECT * FROM book_master1 order by RAND()";
     $allBooksResult = $con->query($selectAllBooksQuery);
 
     $books = [];

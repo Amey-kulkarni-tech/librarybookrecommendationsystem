@@ -84,7 +84,16 @@ class UserRepository
   Future<int> insertBook(Book book)async
   {
     String tagsstring="";
-    for(Tag t in book.taglist)
+    Set<String> uqnme=Set();
+    List<Tag> ftaglist=book.taglist.where((element){
+      if(!uqnme.contains(element.tagname))
+        {
+          uqnme.add(element.tagname);
+          return true;
+        }
+      return false;
+    }).toList();
+    for(Tag t in ftaglist)
       {
         tagsstring=tagsstring+t.tagname+",";
       }
@@ -97,7 +106,7 @@ class UserRepository
       {
         return 200;
       }
-      return 404;
+      return 200;
     }
     else
     {

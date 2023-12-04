@@ -242,9 +242,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   if(book.isliked==0)
                     {
-                      book.isliked =1;
+                      book.isliked=1;
                     }
-
+                    else if(book.isliked==1)
+                      {
+                        book.isliked=0;
+                      }
                 });
               },
             ),
